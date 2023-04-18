@@ -29,6 +29,29 @@ def gauss_seidel(A, b, tolerance, iterations):
     
     return k
 
+def jacobi(A, b, tolerance, iterations):
+    length = len(b)
+    x = np.zeros((length), dtype=np.double)
+    
+    k = 1
+    while (k <= iterations):
+        xo = x.copy()
+
+        for i in range(length):
+            sum = 0
+            for j in range(length):
+                if j != i:
+                    sum += (A[i][j] * xo[j])
+
+            x[i] = (1 / A[i][i]) * (-sum + b[i])
+
+            if (norm(x, xo, tolerance) < tolerance):
+                return k
+        
+        k += 1
+    
+    return k
+
 
 if __name__ == "__main__":
     A = np.array([[3, 1, 1], [1, 4, 1], [2, 3, 7]])
@@ -38,3 +61,7 @@ if __name__ == "__main__":
 
     # Task One: determine number of iterations for Gauss-Seidel to converge
     print(gauss_seidel(A, b, tolerance, iterations))
+    print()
+
+    # Task Two: determine number of iterations for Jacobi method to converge
+    print(jacobi(A, b, tolerance, iterations))
