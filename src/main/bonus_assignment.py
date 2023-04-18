@@ -69,6 +69,28 @@ def newton_raphson(approx, tolerance):
         i += 1
         approx = p
 
+def hermite_matrix(x_points, y_points, derivative):
+    size = 2 * len(x_points)
+    matrix = np.zeros((size, size + 1))
+
+    for i in range(size):
+        matrix[i][0] = x_points[i // 2]
+        matrix[i][1] = y_points[i // 2]
+
+    for i in range(1, size, 2):
+        matrix[i][2] = derivative[i // 2]
+
+    for i in range(2, size):
+        for j in range(2, i + 2):
+            if matrix[i][j] != 0.:
+                continue
+            
+            matrix[i][j] = (matrix[i][j - 1] - matrix[i - 1][j - 1]) / (matrix[i][0] - matrix[i - j + 1][0])
+
+    matrix = np.delete(matrix, size, 1)
+    
+    return matrix
+
 
 if __name__ == "__main__":
     A = np.array([[3, 1, 1], [1, 4, 1], [2, 3, 7]])
@@ -84,5 +106,9 @@ if __name__ == "__main__":
     print(jacobi(A, b, tolerance, iterations))
     print()
 
-    # Task Three
+    # Task Three: determine number of iterations for Newton-Raphson
     print(newton_raphson(0.5, tolerance))
+    print()
+
+    # Task Four: find Hermite polynomial approximation matrix
+    print(np.matrix(hermite_matrix([0., 1., 2.], [1., 2., 4.], [1.06, 1.23, 1.55])))
