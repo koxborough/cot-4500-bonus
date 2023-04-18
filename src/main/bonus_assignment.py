@@ -91,6 +91,19 @@ def hermite_matrix(x_points, y_points, derivative):
     
     return matrix
 
+def function(t, y):
+    return y - (t ** 3)
+
+def eulers_method(initial_condition, endpoint_a, endpoint_b, iterations):
+    step = (endpoint_b - endpoint_a) / iterations
+    t, w = endpoint_a, initial_condition
+
+    for i in range(iterations):
+        w = w + ((step / 2) * (function(t, w) + function(t + step, w + (step * function(t, w)))))
+        t += step
+
+    return w
+
 
 if __name__ == "__main__":
     A = np.array([[3, 1, 1], [1, 4, 1], [2, 3, 7]])
@@ -112,3 +125,7 @@ if __name__ == "__main__":
 
     # Task Four: find Hermite polynomial approximation matrix
     print(np.matrix(hermite_matrix([0., 1., 2.], [1., 2., 4.], [1.06, 1.23, 1.55])))
+    print()
+
+    # Task Five: find final value of Modified Euler's Method
+    print("%.5f" %eulers_method(0.5, 0, 3, 100))
