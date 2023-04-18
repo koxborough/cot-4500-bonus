@@ -52,6 +52,23 @@ def jacobi(A, b, tolerance, iterations):
     
     return k
 
+def f(x):
+    return ((x ** 3) - (x ** 2) + 2)
+
+def f_prime(x):
+    return ((3 * (x ** 2)) - (2 * x))
+
+def newton_raphson(approx, tolerance):
+    i = 1
+    while (f(approx) != f_prime(approx)):
+        p = approx - (f(approx) / f_prime(approx))
+
+        if (abs(p - approx) < tolerance):
+            return i
+        
+        i += 1
+        approx = p
+
 
 if __name__ == "__main__":
     A = np.array([[3, 1, 1], [1, 4, 1], [2, 3, 7]])
@@ -65,3 +82,7 @@ if __name__ == "__main__":
 
     # Task Two: determine number of iterations for Jacobi method to converge
     print(jacobi(A, b, tolerance, iterations))
+    print()
+
+    # Task Three
+    print(newton_raphson(0.5, tolerance))
